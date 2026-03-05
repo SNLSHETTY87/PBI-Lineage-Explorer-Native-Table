@@ -198,14 +198,6 @@ LineageVisualPBI/
 
 ---
 
-## Standalone HTML Version (No Custom Visual Required)
-
-The file `Working PBI DAX Code HTML viewer.txt` contains a self-contained DAX measure that generates a full HTML page with the same lineage visual embedded. This works in a **Power BI HTML content visual** or similar — no `.pbiviz` installation needed.
-
-Copy the entire DAX expression into a measure in your model and use it with an HTML viewer visual.
-
----
-
 ## Development
 
 ```bash
