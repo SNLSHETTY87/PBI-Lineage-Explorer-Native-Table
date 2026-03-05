@@ -26,7 +26,7 @@ A Power BI custom visual that renders an interactive, topological lineage graph 
 
 ### Option A — Use the pre-built visual (easiest)
 
-1. Download `dist/LineageVisualPBI1A2B3C4D5E6F.1.0.0.0.pbiviz` from this repo
+1. Download the latest `.pbiviz` file from the [Releases](https://github.com/SNLSHETTY87/PBI-Lineage-Explorer/releases) page of this repository
 2. In Power BI Desktop or Service: **Insert > More visuals > Import from file**
 3. Select the `.pbiviz` file
 4. Follow the [DAX Setup](#dax-setup) steps below
