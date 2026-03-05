@@ -4,7 +4,7 @@
     "displayName": "PBI Lineage Explorer",
     "guid": "LineageVisualPBI1A2B3C4D5E6F",
     "visualClassName": "Visual",
-    "version": "1.0.0.0",
+    "version": "1.0.0.4",
     "description": "Interactive Power BI lineage visualization with topological layout, S-curve edges, filtering, and impact analysis",
     "supportUrl": "https://powerbi.microsoft.com",
     "gitHubUrl": ""
