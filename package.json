@@ -3,8 +3,8 @@
   "description": "default_template_value",
   "version": "1.0.0.5",
   "repository": {
-    "type": "default_template_value",
-    "url": "default_template_value"
+    "type": "git",
+    "url": "https://github.com/SNLSHETTY87/PBI-Lineage-Explorer-Native-Table"
   },
   "license": "MIT",
   "scripts": {

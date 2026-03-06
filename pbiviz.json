@@ -6,8 +6,8 @@
     "visualClassName": "Visual",
     "version": "1.0.0.5",
     "description": "Interactive Power BI lineage visualization with topological layout, S-curve edges, filtering, and impact analysis",
-    "supportUrl": "https://powerbi.microsoft.com",
-    "gitHubUrl": ""
+    "supportUrl": "https://github.com/SNLSHETTY87/PBI-Lineage-Explorer-Native-Table",
+    "gitHubUrl": "https://github.com/SNLSHETTY87/PBI-Lineage-Explorer-Native-Table"
   },
   "apiVersion": "5.3.0",
   "author": {
