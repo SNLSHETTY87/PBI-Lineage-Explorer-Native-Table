@@ -99,6 +99,13 @@ export class Visual implements IVisual {
       return;
     }
 
+    // If Power BI has more data segments to deliver, request them.
+    // Don't return early — render whatever we have so far, PBI will
+    // call update() again with accumulated rows.
+    if (dataView.metadata?.segment) {
+      this.host.fetchMoreData();
+    }
+
     const columns = dataView.table.columns;
     const iSourceId = columns.findIndex(c => c.roles?.['sourceId']);
     const iSourceName = columns.findIndex(c => c.roles?.['sourceName']);
@@ -245,8 +252,11 @@ export class Visual implements IVisual {
       if (this.selectedCard && !nodeIds.has(this.selectedCard)) {
         this.selectedCard = null;
       }
-      this.toolbar.buildDropdowns(this.nodes, this.WC, this.selWS, this.selDF, this.selRP);
     }
+
+    // Always rebuild dropdowns — PBI may fire multiple update() calls
+    // where NodeIds/edges stay the same but NodeTypes get populated later.
+    this.toolbar.buildDropdowns(this.nodes, this.WC, this.selWS, this.selDF, this.selRP);
 
     this.updateSummaryBar();
     this.render();
