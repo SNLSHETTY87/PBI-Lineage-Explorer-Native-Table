@@ -5,3 +5,5 @@ dist/
 webpack.statistics.prod.html
 nul
 .claude
+*.bak
+implementation_plan.md.resolved

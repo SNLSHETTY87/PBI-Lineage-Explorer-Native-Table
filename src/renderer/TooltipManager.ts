@@ -25,36 +25,60 @@ export class TooltipManager {
             if (ttNm) ttNm.textContent = node.NodeName;
 
             const ttType = this.ttEl.querySelector('#tt-type') as HTMLElement;
-            if (ttType) ttType.innerHTML =
-                '<span class="tt-dot" style="background:' + col + '"></span>' +
-                node.NodeType + ' &middot; ' + node.Workspace;
+            if (ttType) {
+                while (ttType.firstChild) ttType.removeChild(ttType.firstChild);
+                const s = document.createElement('span');
+                s.className = 'tt-dot';
+                s.style.background = col;
+                ttType.appendChild(s);
+                ttType.appendChild(document.createTextNode(node.NodeType + ' \u00B7 ' + node.Workspace));
+            }
 
             const fr = fresh(node.RefreshTime);
             const ttRef = this.ttEl.querySelector('#tt-ref') as HTMLElement;
-            if (ttRef) ttRef.innerHTML = fr
-                ? '<span class="tt-dot" style="background:#94a3c4"></span>' + fr.label
-                : '';
+            if (ttRef) {
+                while (ttRef.firstChild) ttRef.removeChild(ttRef.firstChild);
+                if (fr) {
+                    const s = document.createElement('span');
+                    s.className = 'tt-dot';
+                    s.style.background = '#94a3c4';
+                    ttRef.appendChild(s);
+                    ttRef.appendChild(document.createTextNode(fr.label));
+                }
+            }
 
             const rs = node.RefreshStatus || '';
             const ttSt = this.ttEl.querySelector('#tt-st') as HTMLElement;
             if (ttSt) {
+                while (ttSt.firstChild) ttSt.removeChild(ttSt.firstChild);
                 if (rs) {
                     const rc = rs === 'success' ? '#34d399' : rs === 'failed' ? '#f472b6' : '#fbbf24';
-                    const rl = rs === 'success' ? '&#10003; Success' : rs === 'failed' ? '&#10007; Failed' : '&#8635; In Progress';
-                    ttSt.innerHTML =
-                        '<span class="tt-dot" style="background:' + rc + '"></span>' +
-                        '<span style="color:' + rc + ';font-weight:600">' + rl + '</span>';
-                } else {
-                    ttSt.innerHTML = '';
+                    const rl = rs === 'success' ? '\u2713 Success' : rs === 'failed' ? '\u2717 Failed' : '\u21BA In Progress';
+
+                    const dot = document.createElement('span');
+                    dot.className = 'tt-dot';
+                    dot.style.background = rc;
+                    ttSt.appendChild(dot);
+
+                    const lbl = document.createElement('span');
+                    lbl.style.color = rc;
+                    lbl.style.fontWeight = '600';
+                    lbl.textContent = rl;
+                    ttSt.appendChild(lbl);
                 }
             }
 
             const up = UP[node.NodeId] || 0;
             const dn = DN[node.NodeId] || 0;
             const ttCh = this.ttEl.querySelector('#tt-ch') as HTMLElement;
-            if (ttCh) ttCh.innerHTML =
-                '<span class="tt-dot" style="background:#4a5878"></span>' +
-                '&#8593;' + up + ' upstream &middot; &#8595;' + dn + ' downstream';
+            if (ttCh) {
+                while (ttCh.firstChild) ttCh.removeChild(ttCh.firstChild);
+                const s = document.createElement('span');
+                s.className = 'tt-dot';
+                s.style.background = '#4a5878';
+                ttCh.appendChild(s);
+                ttCh.appendChild(document.createTextNode('\u2191' + up + ' upstream \u00B7 \u2193' + dn + ' downstream'));
+            }
 
             const r = cardEl.getBoundingClientRect();
             this.ttEl.style.left = (r.right + 8) + 'px';

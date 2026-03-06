@@ -20,44 +20,89 @@ export class CardBuilder {
         const dc = DN[node.NodeId] || 0;
         const ic = (RI[node.NodeId] || new Set()).size;
 
-        const impactBadge = node.NodeType !== 'Report' && ic > 0
-            ? '<span class="bg bi" title="' + ic + ' reports affected">&#9889;' + ic + '</span>'
-            : '';
-
-        const upBadge = uc
-            ? '<span class="bg bu" title="' + uc + ' upstream">&#8593;' + uc + '</span>'
-            : '';
-
-        const dnBadge = dc
-            ? '<span class="bg bd" title="' + dc + ' downstream">&#8595;' + dc + '</span>'
-            : '';
-
-        const fr = fresh(node.RefreshTime);
-        const fH = fr
-            ? '<span class="mi"><span class="fd ' + fr.cssClass + '"></span>' + fr.label + '</span>'
-            : '';
-
-        const lH = node.PbiUrl && node.PbiUrl !== ''
-            ? '<a class="lnk" href="' + node.PbiUrl + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#8599; Open</a>'
-            : '';
-
-        const rB = this.rsBar(node.RefreshStatus || '');
-
         const card = document.createElement('div');
         card.className = 'nc ' + cls;
         card.dataset.id = node.NodeId;
 
-        card.innerHTML =
-            '<div class="wt" style="background:' + wsColor + '"></div>' +
-            '<div class="cbody">' +
-            '<div class="ct2">' +
-            '<div class="cnm">' + esc(node.NodeName) + '</div>' +
-            '<div class="cbs">' + impactBadge + upBadge + dnBadge + '</div>' +
-            '</div>' +
-            '<div class="cws" style="color:' + wsColor + '">' + esc(node.Workspace) + '</div>' +
-            '<div class="cmt">' + fH + lH + '</div>' +
-            '</div>' +
-            rB;
+        const wt = document.createElement('div');
+        wt.className = 'wt';
+        wt.style.background = wsColor;
+        card.appendChild(wt);
+
+        const cbody = document.createElement('div');
+        cbody.className = 'cbody';
+
+        const ct2 = document.createElement('div');
+        ct2.className = 'ct2';
+
+        const cnm = document.createElement('div');
+        cnm.className = 'cnm';
+        cnm.textContent = node.NodeName;
+        ct2.appendChild(cnm);
+
+        const cbs = document.createElement('div');
+        cbs.className = 'cbs';
+
+        if (node.NodeType !== 'Report' && ic > 0) {
+            const ib = document.createElement('span');
+            ib.className = 'bg bi';
+            ib.title = ic + ' reports affected';
+            ib.textContent = '\u26A1' + ic; // thunderbolt icon
+            cbs.appendChild(ib);
+        }
+        if (uc > 0) {
+            const upb = document.createElement('span');
+            upb.className = 'bg bu';
+            upb.title = uc + ' upstream';
+            upb.textContent = '\u2191' + uc; // up arrow
+            cbs.appendChild(upb);
+        }
+        if (dc > 0) {
+            const dnb = document.createElement('span');
+            dnb.className = 'bg bd';
+            dnb.title = dc + ' downstream';
+            dnb.textContent = '\u2193' + dc; // down arrow
+            cbs.appendChild(dnb);
+        }
+        ct2.appendChild(cbs);
+        cbody.appendChild(ct2);
+
+        const cws = document.createElement('div');
+        cws.className = 'cws';
+        cws.style.color = wsColor;
+        cws.textContent = node.Workspace;
+        cbody.appendChild(cws);
+
+        const cmt = document.createElement('div');
+        cmt.className = 'cmt';
+
+        const fr = fresh(node.RefreshTime);
+        if (fr) {
+            const fh = document.createElement('span');
+            fh.className = 'mi';
+            const fd = document.createElement('span');
+            fd.className = 'fd ' + fr.cssClass;
+            fh.appendChild(fd);
+            fh.appendChild(document.createTextNode(fr.label));
+            cmt.appendChild(fh);
+        }
+
+        if (node.PbiUrl && node.PbiUrl !== '') {
+            const lh = document.createElement('a');
+            lh.className = 'lnk';
+            lh.href = node.PbiUrl;
+            lh.target = '_blank';
+            lh.rel = 'noopener';
+            lh.textContent = '\u2197 Open'; // upward slanted arrow
+            lh.onclick = (e) => e.stopPropagation();
+            cmt.appendChild(lh);
+        }
+
+        cbody.appendChild(cmt);
+        card.appendChild(cbody);
+
+        const rB = this.rsBar(node.RefreshStatus || '');
+        if (rB) card.appendChild(rB);
 
         card.addEventListener('mouseenter', () => onHover(node, card));
         card.addEventListener('mouseleave', onLeave);
@@ -66,13 +111,28 @@ export class CardBuilder {
         return card;
     }
 
-    private rsBar(st: string): string {
-        if (st === 'success')
-            return '<div class="rs-bar rs-success"><span class="rs-dot"></span>Success</div>';
-        if (st === 'failed')
-            return '<div class="rs-bar rs-failed"><span class="rs-dot"></span>Failed</div>';
-        if (st === 'progress')
-            return '<div class="rs-bar rs-progress"><span class="rs-dot"></span>In Progress</div>';
-        return '';
+    private rsBar(st: string): HTMLElement | null {
+        if (!st) return null;
+        const d = document.createElement('div');
+        const s = document.createElement('span');
+        s.className = 'rs-dot';
+        d.appendChild(s);
+
+        if (st === 'success') {
+            d.className = 'rs-bar rs-success';
+            d.appendChild(document.createTextNode('Success'));
+            return d;
+        }
+        if (st === 'failed') {
+            d.className = 'rs-bar rs-failed';
+            d.appendChild(document.createTextNode('Failed'));
+            return d;
+        }
+        if (st === 'progress') {
+            d.className = 'rs-bar rs-progress';
+            d.appendChild(document.createTextNode('In Progress'));
+            return d;
+        }
+        return null;
     }
 }

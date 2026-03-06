@@ -45,15 +45,30 @@ export class RightPanel {
 
         const fr = fresh(node.RefreshTime);
         const refRow = this.container.querySelector('#rp-refreshrow') as HTMLElement;
-        if (refRow) refRow.innerHTML = fr ? fdDot(fr.cssClass) + ' Refreshed ' + fr.label : '';
+        if (refRow) {
+            while (refRow.firstChild) refRow.removeChild(refRow.firstChild);
+            if (fr) {
+                const fdDotSpan = document.createElement('span');
+                fdDotSpan.className = 'fd ' + fr.cssClass;
+                refRow.appendChild(fdDotSpan);
+                refRow.appendChild(document.createTextNode(' Refreshed ' + fr.label));
+            }
+        }
 
         const rs = node.RefreshStatus || '';
         const rsEl = this.container.querySelector('#rp-statusrow') as HTMLElement;
         if (rsEl) {
+            while (rsEl.firstChild) rsEl.removeChild(rsEl.firstChild);
             if (rs) {
                 const rsCol = rs === 'success' ? '#34d399' : rs === 'failed' ? '#f472b6' : '#fbbf24';
-                const rsLbl = rs === 'success' ? '&#10003; Success' : rs === 'failed' ? '&#10007; Failed' : '&#8635; In Progress';
-                rsEl.innerHTML = '<span style="color:' + rsCol + ';font-size:10px;font-family:monospace;font-weight:600">' + rsLbl + '</span>';
+                const rsLbl = rs === 'success' ? '\u2713 Success' : rs === 'failed' ? '\u2717 Failed' : '\u21BA In Progress';
+                const s = document.createElement('span');
+                s.style.color = rsCol;
+                s.style.fontSize = '10px';
+                s.style.fontFamily = 'monospace';
+                s.style.fontWeight = '600';
+                s.textContent = rsLbl;
+                rsEl.appendChild(s);
                 rsEl.style.display = 'flex';
             } else {
                 rsEl.style.display = 'none';
@@ -82,8 +97,14 @@ export class RightPanel {
 
         const upList = this.container.querySelector('#rp-up-list') as HTMLElement;
         const dnList = this.container.querySelector('#rp-dn-list') as HTMLElement;
-        if (upList) { upList.innerHTML = ''; upNodes.forEach(n => upList.appendChild(this.makeItem(n, directUp.includes(n.NodeId), onCardClick))); }
-        if (dnList) { dnList.innerHTML = ''; dnNodes.forEach(n => dnList.appendChild(this.makeItem(n, directDn.includes(n.NodeId), onCardClick))); }
+        if (upList) {
+            while (upList.firstChild) upList.removeChild(upList.firstChild);
+            upNodes.forEach(n => upList.appendChild(this.makeItem(n, directUp.includes(n.NodeId), onCardClick)));
+        }
+        if (dnList) {
+            while (dnList.firstChild) dnList.removeChild(dnList.firstChild);
+            dnNodes.forEach(n => dnList.appendChild(this.makeItem(n, directDn.includes(n.NodeId), onCardClick)));
+        }
 
         this.setTextById('rp-up-cnt', String(upNodes.length));
         this.setTextById('rp-dn-cnt', String(dnNodes.length));
@@ -120,13 +141,40 @@ export class RightPanel {
         body.className = 'rp-item-body';
 
         const fr = fresh(node.RefreshTime);
-        body.innerHTML =
-            '<div class="rp-item-name">' + esc(node.NodeName) + '</div>' +
-            '<div class="rp-item-sub">' +
-            '<span style="color:' + nodeColor(node.NodeType) + ';opacity:.75">' + node.NodeType + '</span>' +
-            (fr ? fdSpan(fr.cssClass, fr.label) : '') +
-            (!isDirect ? '<span style="color:#2a3550;font-size:8px">INDIRECT</span>' : '') +
-            '</div>';
+
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'rp-item-name';
+        nameDiv.textContent = node.NodeName;
+        body.appendChild(nameDiv);
+
+        const subDiv = document.createElement('div');
+        subDiv.className = 'rp-item-sub';
+
+        const typeSpan = document.createElement('span');
+        typeSpan.style.color = nodeColor(node.NodeType);
+        typeSpan.style.opacity = '0.75';
+        typeSpan.textContent = node.NodeType;
+        subDiv.appendChild(typeSpan);
+
+        if (fr) {
+            const fsDiv = document.createElement('span');
+            fsDiv.className = 'mi';
+            const fsDot = document.createElement('span');
+            fsDot.className = 'fd ' + fr.cssClass;
+            fsDiv.appendChild(fsDot);
+            fsDiv.appendChild(document.createTextNode(fr.label));
+            subDiv.appendChild(fsDiv);
+        }
+
+        if (!isDirect) {
+            const indSpan = document.createElement('span');
+            indSpan.style.color = '#2a3550';
+            indSpan.style.fontSize = '8px';
+            indSpan.textContent = 'INDIRECT';
+            subDiv.appendChild(indSpan);
+        }
+
+        body.appendChild(subDiv);
 
         div.appendChild(dot);
         div.appendChild(body);

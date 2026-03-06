@@ -51,129 +51,38 @@ npm run package
 
 ---
 
-## DAX Setup
+## Data Setup
 
-The visual requires **two DAX measures** added to your Power BI model.
+The visual requires a **single flat table** added to your Power BI model.
 
-### Step 1 — Prepare your data tables
+### Required Table Schema
 
-You need two tables in your model:
+You need one table with the following concept representing a lineage connection between an upstream node (Source) and a downstream node (Target).
 
-| Table | Required Columns |
-|-------|-----------------|
-| `Nodes` | `NodeId`, `NodeName`, `NodeType` (`Dataflow`/`Dataset`/`Report`), `Workspace`, `Last Successful Refresh node`, `Latest Refresh Status` (`success`/`failed`/`progress`), `PBI_URL` |
-| `Edges` | `SourceId`, `TargetId`, `Source`, `Target` |
+| Field Type | Required | Description |
+|---|---|---|
+| `sourceId` | Yes* | Globally unique ID for the upstream item. *Required only if a source node exists. |
+| `sourceName` | No | Display name of the upstream item |
+| `sourceType` | No | Exactly: `Dataflow`, `Dataset`, or `Report` |
+| `sourceWs` | No | Workspace display name for the upstream item |
+| `sourceStatus` | No | One of: `success`, `failed`, `progress` |
+| `sourceTime` | No | Last successful refresh timestamp for the upstream item |
+| `sourceUrl` | No | Direct URL to the item in Power BI Service |
+| `targetId` | Yes* | Globally unique ID for the downstream item. *Required only if a target node exists. |
+| `targetName` | No | Display name of the downstream item |
+| `targetType` | No | Exactly: `Dataflow`, `Dataset`, or `Report` |
+| `targetWs` | No | Workspace display name for the downstream item |
+| `targetStatus` | No | One of: `success`, `failed`, `progress` |
+| `targetTime` | No | Last successful refresh timestamp for the downstream item |
+| `targetUrl` | No | Direct URL to the item in Power BI Service |
 
-> A sample Excel file (`PBI_Lineage_SampleData.xlsx`) with the correct column structure is included in this repo. Import it into Power BI as your starting point.
+> A sample Excel file (`PBI_Lineage_SampleData.xlsx`) with the correct column structure is included in this repo. Import it into Power BI to see how the single flat table works.
 
-### Step 2 — Create the NodesJSON measure
-
-The visual supports **two DAX approaches** — both work identically:
-
-#### Option A — `CONCATENATEX` (classic, compatible with all Power BI versions)
-
-```dax
-NodesJSON =
-VAR _rows =
-    CONCATENATEX(
-        Nodes,
-        "{"
-            & """NodeId"":"""      & SUBSTITUTE(Nodes[NodeId],   """","'") & ""","
-            & """NodeName"":"""    &
-                SUBSTITUTE(
-                    SUBSTITUTE(Nodes[NodeName], """", "'"),
-                    "&", "&amp;"
-                ) & ""","
-            & """NodeType"":"""    & Nodes[NodeType]    & ""","
-            & """Workspace"":"""   & SUBSTITUTE(Nodes[Workspace], """","'") & ""","
-            & """RefreshTime"":""" &
-                IF(
-                    ISBLANK(Nodes[Last Successful Refresh node]), "",
-                    FORMAT(Nodes[Last Successful Refresh node], "YYYY-MM-DDTHH:mm:SS") & "Z"
-                ) & ""","
-            & """RefreshStatus"":""" &
-                IF(ISBLANK(Nodes[Latest Refresh Status]), "", Nodes[Latest Refresh Status])
-            & ""","
-            & """PbiUrl"":"""      & IF(ISBLANK(Nodes[PBI_URL]), "", Nodes[PBI_URL]) & """"
-        & "}",
-        ","
-    )
-RETURN "[" & _rows & "]"
-```
-
-#### Option B — `TOJSON` (recommended for large models, requires Power BI May 2024+)
-
-> ⚠️ **Always specify `maxCapacity`** (the second argument). Without it, `TOJSON` silently truncates at a tiny default row limit and only a fraction of your data returns.
-
-```dax
-NodesJSON TOJSON =
-TOJSON(
-    SELECTCOLUMNS(
-        Nodes,
-        "NodeId",       Nodes[NodeId],
-        "NodeName",     Nodes[NodeName],
-        "NodeType",     Nodes[NodeType],
-        "Workspace",    Nodes[Workspace],
-        "RefreshTime",
-            IF(
-                ISBLANK(Nodes[Last Successful Refresh node]),
-                BLANK(),
-                FORMAT(Nodes[Last Successful Refresh node], "yyyy-MM-ddTHH:mm:ss") & "Z"
-            ),
-        "RefreshStatus",
-            IF(ISBLANK(Nodes[Latest Refresh Status]), BLANK(), Nodes[Latest Refresh Status]),
-        "PbiUrl",
-            IF(ISBLANK(Nodes[PBI_URL]), BLANK(), Nodes[PBI_URL])
-    ),
-    100000   -- maxCapacity: allow up to 100,000 rows
-)
-```
-
-### Step 3 — Create the EdgesJSON measure
-
-#### Option A — `CONCATENATEX`
-
-```dax
-EdgesJSON =
-VAR _rows =
-    CONCATENATEX(
-        Edges,
-        "{"
-            & """SourceId"":""" & SUBSTITUTE([SourceId], """", "'") & ""","
-            & """Source"":"""   & SUBSTITUTE([Source],   """", "'") & ""","
-            & """TargetId"":""" & SUBSTITUTE([TargetId], """", "'") & ""","
-            & """Target"":"""   & SUBSTITUTE([Target],   """", "'") & """"
-        & "}",
-        ","
-    )
-RETURN "[" & _rows & "]"
-```
-
-#### Option B — `TOJSON`
-
-```dax
-EdgesJSON TOJSON =
-TOJSON(
-    SELECTCOLUMNS(
-        Edges,
-        "SourceId", Edges[SourceId],
-        "Source",   Edges[Source],
-        "TargetId", Edges[TargetId],
-        "Target",   Edges[Target]
-    ),
-    100000   -- maxCapacity: allow up to 100,000 rows
-)
-```
-
-> The visual **auto-detects** the format and parses both correctly — no code changes needed when switching.
-
-### Step 4 — Add the visual to your report
+### Step 1 — Add the visual to your report
 
 1. Add the **PBI Lineage Explorer** visual to a report page
-2. In the **Fields** pane, drag:
-   - `NodesJSON` measure → **Nodes JSON** field well
-   - `EdgesJSON` measure → **Edges JSON** field well
-3. The lineage graph will render automatically
+2. In the **Fields** pane, map the `sourceId`, `sourceName`, `sourceType`, `sourceWs`, etc. to their respective placeholders under **Source Data** and **Target Data**.
+3. The lineage graph will render automatically!
 
 ---
 

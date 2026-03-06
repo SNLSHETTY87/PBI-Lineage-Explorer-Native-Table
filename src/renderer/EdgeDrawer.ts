@@ -14,7 +14,9 @@ export class EdgeDrawer {
     }
 
     public drawEdges(edges: EdgeData[], hlSet: Set<string> | null): void {
-        this.layer.innerHTML = '';
+        while (this.layer.firstChild) {
+            this.layer.removeChild(this.layer.firstChild);
+        }
         if (!edges.length) return;
 
         const mr = this.mainEl.getBoundingClientRect();

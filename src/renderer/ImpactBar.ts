@@ -39,18 +39,31 @@ export class ImpactBar {
 
         const icEl = this.container.querySelector('#ic') as HTMLElement;
         if (icEl) {
-            icEl.innerHTML = [
-                ...datasets.slice(0, 3).map(d => {
-                    const x = nodes.find(m => m.NodeId === d);
-                    return '<span class="ich"><span class="ichd" style="background:#34d399"></span>' +
-                        (x ? esc(x.NodeName.slice(0, 22)) : d) + '</span>';
-                }),
-                ...reports.slice(0, 5).map(r => {
-                    const x = nodes.find(m => m.NodeId === r);
-                    return '<span class="ich"><span class="ichd" style="background:#fb923c"></span>' +
-                        (x ? esc(x.NodeName.slice(0, 22)) : r) + '</span>';
-                })
-            ].join('');
+            while (icEl.firstChild) icEl.removeChild(icEl.firstChild);
+
+            datasets.slice(0, 3).forEach(d => {
+                const x = nodes.find(m => m.NodeId === d);
+                const sp = document.createElement('span');
+                sp.className = 'ich';
+                const dsp = document.createElement('span');
+                dsp.className = 'ichd';
+                dsp.style.background = '#34d399';
+                sp.appendChild(dsp);
+                sp.appendChild(document.createTextNode(x ? x.NodeName.slice(0, 22) : d));
+                icEl.appendChild(sp);
+            });
+
+            reports.slice(0, 5).forEach(r => {
+                const x = nodes.find(m => m.NodeId === r);
+                const sp = document.createElement('span');
+                sp.className = 'ich';
+                const dsp = document.createElement('span');
+                dsp.className = 'ichd';
+                dsp.style.background = '#fb923c';
+                sp.appendChild(dsp);
+                sp.appendChild(document.createTextNode(x ? x.NodeName.slice(0, 22) : r));
+                icEl.appendChild(sp);
+            });
         }
 
         const ib = this.container.querySelector('#ib') as HTMLElement;

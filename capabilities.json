@@ -1,16 +1,74 @@
 {
   "dataRoles": [
     {
-      "displayName": "Nodes JSON",
-      "name": "nodesJson",
-      "kind": "Measure",
-      "description": "DAX measure returning the Nodes JSON array string"
+      "displayName": "Source Node ID",
+      "name": "sourceId",
+      "kind": "GroupingOrMeasure"
     },
     {
-      "displayName": "Edges JSON",
-      "name": "edgesJson",
-      "kind": "Measure",
-      "description": "DAX measure returning the Edges JSON array string"
+      "displayName": "Source Node Name",
+      "name": "sourceName",
+      "kind": "GroupingOrMeasure"
+    },
+    {
+      "displayName": "Source Node Type",
+      "name": "sourceType",
+      "kind": "GroupingOrMeasure"
+    },
+    {
+      "displayName": "Source Workspace",
+      "name": "sourceWs",
+      "kind": "GroupingOrMeasure"
+    },
+    {
+      "displayName": "Source Refresh Status",
+      "name": "sourceStatus",
+      "kind": "Measure"
+    },
+    {
+      "displayName": "Source Refresh Time",
+      "name": "sourceTime",
+      "kind": "Measure"
+    },
+    {
+      "displayName": "Source PBI URL",
+      "name": "sourceUrl",
+      "kind": "Measure"
+    },
+    {
+      "displayName": "Target Node ID",
+      "name": "targetId",
+      "kind": "GroupingOrMeasure"
+    },
+    {
+      "displayName": "Target Node Name",
+      "name": "targetName",
+      "kind": "GroupingOrMeasure"
+    },
+    {
+      "displayName": "Target Node Type",
+      "name": "targetType",
+      "kind": "GroupingOrMeasure"
+    },
+    {
+      "displayName": "Target Workspace",
+      "name": "targetWs",
+      "kind": "GroupingOrMeasure"
+    },
+    {
+      "displayName": "Target Refresh Status",
+      "name": "targetStatus",
+      "kind": "Measure"
+    },
+    {
+      "displayName": "Target Refresh Time",
+      "name": "targetTime",
+      "kind": "Measure"
+    },
+    {
+      "displayName": "Target PBI URL",
+      "name": "targetUrl",
+      "kind": "Measure"
     }
   ],
   "dataViewMappings": [
@@ -18,9 +76,82 @@
       "table": {
         "rows": {
           "select": [
-            { "for": { "in": "nodesJson" } },
-            { "for": { "in": "edgesJson" } }
-          ]
+            {
+              "for": {
+                "in": "sourceId"
+              }
+            },
+            {
+              "for": {
+                "in": "sourceName"
+              }
+            },
+            {
+              "for": {
+                "in": "sourceType"
+              }
+            },
+            {
+              "for": {
+                "in": "sourceWs"
+              }
+            },
+            {
+              "for": {
+                "in": "sourceStatus"
+              }
+            },
+            {
+              "for": {
+                "in": "sourceTime"
+              }
+            },
+            {
+              "for": {
+                "in": "sourceUrl"
+              }
+            },
+            {
+              "for": {
+                "in": "targetId"
+              }
+            },
+            {
+              "for": {
+                "in": "targetName"
+              }
+            },
+            {
+              "for": {
+                "in": "targetType"
+              }
+            },
+            {
+              "for": {
+                "in": "targetWs"
+              }
+            },
+            {
+              "for": {
+                "in": "targetStatus"
+              }
+            },
+            {
+              "for": {
+                "in": "targetTime"
+              }
+            },
+            {
+              "for": {
+                "in": "targetUrl"
+              }
+            }
+          ],
+          "dataReductionAlgorithm": {
+            "window": {
+              "count": 30000
+            }
+          }
         }
       }
     }

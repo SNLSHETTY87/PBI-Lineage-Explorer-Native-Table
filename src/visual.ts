@@ -11,7 +11,7 @@ import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 
 import { VisualFormattingSettingsModel } from "./settings";
 import { NodeData, EdgeData } from "./interfaces";
-import { initWorkspaceColors, parseDaxJson } from "./utils/helpers";
+import { initWorkspaceColors } from "./utils/helpers";
 import { anc, dsc, precompute, getVisibleNodes } from "./utils/graphUtils";
 import { LayoutEngine } from "./renderer/LayoutEngine";
 import { CardBuilder } from "./renderer/CardBuilder";
@@ -95,35 +95,123 @@ export class Visual implements IVisual {
 
     const dataView = options.dataViews?.[0];
     if (!dataView?.table?.rows?.length) {
-      this.showEmpty("Drag <b>Nodes JSON</b> and <b>Edges JSON</b> measures into the field wells");
+      this.showEmpty("Drag columns from your data table into the field wells");
       return;
     }
 
     const columns = dataView.table.columns;
-    const row = dataView.table.rows[0];
+    const iSourceId = columns.findIndex(c => c.roles?.['sourceId']);
+    const iSourceName = columns.findIndex(c => c.roles?.['sourceName']);
+    const iSourceType = columns.findIndex(c => c.roles?.['sourceType']);
+    const iSourceWs = columns.findIndex(c => c.roles?.['sourceWs']);
+    const iSourceStatus = columns.findIndex(c => c.roles?.['sourceStatus']);
+    const iSourceTime = columns.findIndex(c => c.roles?.['sourceTime']);
+    const iSourceUrl = columns.findIndex(c => c.roles?.['sourceUrl']);
 
-    const iNodes = columns.findIndex(c => c.roles?.['nodesJson']);
-    const iEdges = columns.findIndex(c => c.roles?.['edgesJson']);
+    const iTargetId = columns.findIndex(c => c.roles?.['targetId']);
+    const iTargetName = columns.findIndex(c => c.roles?.['targetName']);
+    const iTargetType = columns.findIndex(c => c.roles?.['targetType']);
+    const iTargetWs = columns.findIndex(c => c.roles?.['targetWs']);
+    const iTargetStatus = columns.findIndex(c => c.roles?.['targetStatus']);
+    const iTargetTime = columns.findIndex(c => c.roles?.['targetTime']);
+    const iTargetUrl = columns.findIndex(c => c.roles?.['targetUrl']);
 
-    const nodesStr = iNodes >= 0 ? String(row[iNodes] || "") : "";
-    const edgesStr = iEdges >= 0 ? String(row[iEdges] || "") : "";
+    const nodeMap = new Map<string, NodeData>();
+    const edgeSet = new Set<string>();
+    const parsedEdges: EdgeData[] = [];
 
-    try {
-      this.nodes = nodesStr.trim() ? parseDaxJson(nodesStr) : [];
-    } catch (e) {
-      this.showEmpty("Nodes JSON parse error: " + e);
-      return;
-    }
+    dataView.table.rows.forEach(row => {
+      // Safe string extraction
+      const getStr = (idx: number) => idx >= 0 && row[idx] != null ? String(row[idx]) : "";
 
-    try {
-      this.edges = edgesStr.trim() ? parseDaxJson(edgesStr) : [];
-    } catch (e) {
-      this.showEmpty("Edges JSON parse error: " + e);
-      return;
-    }
+      const unescapeStr = (s: string) => s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+
+      const normType = (t: string) => {
+        const l = t.toLowerCase().trim();
+        if (l === 'dataflow') return 'Dataflow';
+        if (l.includes('dataset') || l.includes('semantic model')) return 'Dataset';
+        if (l === 'report') return 'Report';
+        return t.trim();
+      };
+
+      const sId = getStr(iSourceId);
+      const sName = unescapeStr(getStr(iSourceName));
+      const sType = normType(getStr(iSourceType));
+      const sWs = unescapeStr(getStr(iSourceWs));
+      const sStatus = getStr(iSourceStatus);
+      const sTime = getStr(iSourceTime);
+      const sUrl = getStr(iSourceUrl);
+
+      const tId = getStr(iTargetId);
+      const tName = unescapeStr(getStr(iTargetName));
+      const tType = normType(getStr(iTargetType));
+      const tWs = unescapeStr(getStr(iTargetWs));
+      const tStatus = getStr(iTargetStatus);
+      const tTime = getStr(iTargetTime);
+      const tUrl = getStr(iTargetUrl);
+
+      // Add Source Node if ID exists
+      if (sId) {
+        if (!nodeMap.has(sId)) {
+          nodeMap.set(sId, {
+            NodeId: sId,
+            NodeName: sName || sId,
+            NodeType: sType,
+            Workspace: sWs,
+            RefreshStatus: sStatus,
+            RefreshTime: sTime,
+            PbiUrl: sUrl
+          });
+        } else {
+          // Update optional properties if empty previously
+          const n = nodeMap.get(sId);
+          if (!n.RefreshStatus && sStatus) n.RefreshStatus = sStatus;
+          if (!n.RefreshTime && sTime) n.RefreshTime = sTime;
+          if (!n.PbiUrl && sUrl) n.PbiUrl = sUrl;
+        }
+      }
+
+      // Add Target Node if ID exists
+      if (tId) {
+        if (!nodeMap.has(tId)) {
+          nodeMap.set(tId, {
+            NodeId: tId,
+            NodeName: tName || tId,
+            NodeType: tType,
+            Workspace: tWs,
+            RefreshStatus: tStatus,
+            RefreshTime: tTime,
+            PbiUrl: tUrl
+          });
+        } else {
+          // Update optional properties if empty previously
+          const n = nodeMap.get(tId);
+          if (!n.RefreshStatus && tStatus) n.RefreshStatus = tStatus;
+          if (!n.RefreshTime && tTime) n.RefreshTime = tTime;
+          if (!n.PbiUrl && tUrl) n.PbiUrl = tUrl;
+        }
+      }
+
+      // Add Edge if both exist
+      if (sId && tId) {
+        const edgeKey = sId + "###" + tId;
+        if (!edgeSet.has(edgeKey)) {
+          edgeSet.add(edgeKey);
+          parsedEdges.push({
+            SourceId: sId,
+            Source: sName || sId,
+            TargetId: tId,
+            Target: tName || tId
+          });
+        }
+      }
+    });
+
+    this.nodes = Array.from(nodeMap.values());
+    this.edges = parsedEdges;
 
     if (!this.nodes.length) {
-      this.showEmpty("No nodes data received");
+      this.showEmpty("Please ensure the required Source Node ID and Target Node ID fields are mapped.");
       return;
     }
 
@@ -163,7 +251,7 @@ export class Visual implements IVisual {
   }
 
   private buildStaticDOM(): void {
-    this.container.innerHTML = `
+    const htmlString = `
 <div id="app-wrap">
 <div class="nc-tooltip" id="tt">
   <div class="tt-name" id="tt-nm"></div>
@@ -358,8 +446,13 @@ export class Visual implements IVisual {
 <div id="bnn"></div>
 </div>
 <div class="empty-state" id="empty-msg" style="display:none">
-  <div>Drag <b>Nodes JSON</b> and <b>Edges JSON</b> measures into the field wells</div>
+  <div>Drag columns from the Data table into the visual's field wells</div>
 </div>`;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+    while (doc.body.firstChild) {
+      this.container.appendChild(doc.body.firstChild);
+    }
   }
 
   private initSubRenderers(): void {
@@ -424,11 +517,11 @@ export class Visual implements IVisual {
     if (themeBtn) {
       themeBtn.addEventListener('click', () => {
         const isLight = this.container.classList.toggle('light');
-        themeBtn.innerHTML = isLight ? '&#9728;' : '&#9790;'; // ☀ or ☾
+        themeBtn.textContent = isLight ? '\u2600' : '\u263D'; // ☀ or ☾
         try { localStorage.setItem('pbi-lineage-theme', isLight ? 'light' : 'dark'); } catch (_) { /* ignore */ }
       });
       // Sync icon with restored theme
-      if (this.container.classList.contains('light')) themeBtn.innerHTML = '&#9728;';
+      if (this.container.classList.contains('light')) themeBtn.textContent = '\u2600';
     }
 
     // Clear failed on total click
@@ -493,10 +586,10 @@ export class Visual implements IVisual {
     const columns = this.layoutEngine.computeLayout(visNodes, visEdges);
 
     const svgEl = this.container.querySelector('#esvg') as SVGElement;
-    this.gridEl.innerHTML = '';
+    while (this.gridEl.firstChild) this.gridEl.removeChild(this.gridEl.firstChild);
     if (svgEl) this.gridEl.appendChild(svgEl);
 
-    this.stageHeadersEl.innerHTML = '';
+    while (this.stageHeadersEl.firstChild) this.stageHeadersEl.removeChild(this.stageHeadersEl.firstChild);
 
     columns.forEach((col) => {
       const sh = document.createElement('div');
@@ -513,10 +606,16 @@ export class Visual implements IVisual {
         requestAnimationFrame(() => this.redraw());
       });
 
-      sh.innerHTML =
-        '<div class="sh-dot" style="background:' + col.info.dotColor + '"></div>' +
-        col.info.label +
-        '<span class="sh-cnt">' + col.nodes.length + '</span>';
+      const dot = document.createElement('div');
+      dot.className = 'sh-dot';
+      dot.style.background = col.info.dotColor;
+      sh.appendChild(dot);
+      sh.appendChild(document.createTextNode(col.info.label));
+
+      const shCnt = document.createElement('span');
+      shCnt.className = 'sh-cnt';
+      shCnt.textContent = String(col.nodes.length);
+      sh.appendChild(shCnt);
       sh.appendChild(colBtn);
       this.stageHeadersEl.appendChild(sh);
 
@@ -667,7 +766,13 @@ export class Visual implements IVisual {
     const appWrap = this.container.querySelector('#app-wrap') as HTMLElement;
     const emptyMsg = this.container.querySelector('#empty-msg') as HTMLElement;
     if (appWrap) appWrap.style.display = 'none';
-    if (emptyMsg) { emptyMsg.style.display = 'flex'; emptyMsg.innerHTML = '<div>' + msg + '</div>'; }
+    if (emptyMsg) {
+      emptyMsg.style.display = 'flex';
+      while (emptyMsg.firstChild) emptyMsg.removeChild(emptyMsg.firstChild);
+      const child = document.createElement('div');
+      child.textContent = msg;
+      emptyMsg.appendChild(child);
+    }
   }
 
   private hideEmpty(): void {

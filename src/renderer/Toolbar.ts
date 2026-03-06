@@ -1,5 +1,5 @@
 import { NodeData } from "../interfaces";
-import { esc, initWorkspaceColors } from "../utils/helpers";
+import { initWorkspaceColors } from "../utils/helpers";
 
 export class Toolbar {
     private container: HTMLElement;
@@ -20,7 +20,7 @@ export class Toolbar {
         // workspace list
         const wsList = this.container.querySelector('#ws-list') as HTMLElement;
         if (wsList) {
-            wsList.innerHTML = '';
+            while (wsList.firstChild) wsList.removeChild(wsList.firstChild);
             [...new Set(nodes.map(n => n.Workspace))].sort().forEach(w =>
                 wsList.appendChild(this.makeMsItem('ws', w, w, WC[w] || '#818cf8'))
             );
@@ -29,7 +29,7 @@ export class Toolbar {
         // dataflow list
         const dfList = this.container.querySelector('#df-list') as HTMLElement;
         if (dfList) {
-            dfList.innerHTML = '';
+            while (dfList.firstChild) dfList.removeChild(dfList.firstChild);
             nodes.filter(n => n.NodeType === 'Dataflow')
                 .sort((a, b) => a.NodeName.localeCompare(b.NodeName))
                 .forEach(n => dfList.appendChild(this.makeMsItem('df', n.NodeId, n.NodeName, '#4d9eff', n.Workspace)));
@@ -38,7 +38,7 @@ export class Toolbar {
         // report list
         const rpList = this.container.querySelector('#rp-list') as HTMLElement;
         if (rpList) {
-            rpList.innerHTML = '';
+            while (rpList.firstChild) rpList.removeChild(rpList.firstChild);
             nodes.filter(n => n.NodeType === 'Report')
                 .sort((a, b) => a.NodeName.localeCompare(b.NodeName))
                 .forEach(n => rpList.appendChild(this.makeMsItem('rp', n.NodeId, n.NodeName, '#fb923c', n.Workspace)));
@@ -47,11 +47,15 @@ export class Toolbar {
         // workspace legend
         const wsl = this.container.querySelector('#wsl') as HTMLElement;
         if (wsl) {
-            wsl.innerHTML = '';
+            while (wsl.firstChild) wsl.removeChild(wsl.firstChild);
             [...new Set(nodes.map(n => n.Workspace))].sort().forEach(w => {
                 const d = document.createElement('div');
                 d.className = 'wli';
-                d.innerHTML = '<div class="wld" style="background:' + WC[w] + '"></div>' + esc(w);
+                const wld = document.createElement('div');
+                wld.className = 'wld';
+                wld.style.background = WC[w];
+                d.appendChild(wld);
+                d.appendChild(document.createTextNode(w));
                 wsl.appendChild(d);
             });
         }
