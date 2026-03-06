@@ -1,8 +1,8 @@
 {
   "visual": {
-    "name": "LineageVisualPBI",
-    "displayName": "PBI Lineage Explorer",
-    "guid": "LineageVisualPBI1A2B3C4D5E6F",
+    "name": "LineageVisualPBINativeTable",
+    "displayName": "PBI Lineage Explorer (Table)",
+    "guid": "LineageVisualPBINativeTable2026",
     "visualClassName": "Visual",
     "version": "1.0.0.5",
     "description": "Interactive Power BI lineage visualization with topological layout, S-curve edges, filtering, and impact analysis",
