@@ -130,7 +130,7 @@ export class Visual implements IVisual {
         const l = t.toLowerCase().trim();
         if (l === 'dataflow') return 'Dataflow';
         if (l.includes('dataset') || l.includes('semantic model')) return 'Dataset';
-        if (l === 'report') return 'Report';
+        if (l.includes('report')) return 'Report';
         return t.trim();
       };
 
@@ -165,6 +165,9 @@ export class Visual implements IVisual {
         } else {
           // Update optional properties if empty previously
           const n = nodeMap.get(sId);
+          if (sName && n.NodeName === sId) n.NodeName = sName;
+          if (!n.NodeType && sType) n.NodeType = sType;
+          if (!n.Workspace && sWs) n.Workspace = sWs;
           if (!n.RefreshStatus && sStatus) n.RefreshStatus = sStatus;
           if (!n.RefreshTime && sTime) n.RefreshTime = sTime;
           if (!n.PbiUrl && sUrl) n.PbiUrl = sUrl;
@@ -186,6 +189,9 @@ export class Visual implements IVisual {
         } else {
           // Update optional properties if empty previously
           const n = nodeMap.get(tId);
+          if (tName && n.NodeName === tId) n.NodeName = tName;
+          if (!n.NodeType && tType) n.NodeType = tType;
+          if (!n.Workspace && tWs) n.Workspace = tWs;
           if (!n.RefreshStatus && tStatus) n.RefreshStatus = tStatus;
           if (!n.RefreshTime && tTime) n.RefreshTime = tTime;
           if (!n.PbiUrl && tUrl) n.PbiUrl = tUrl;
