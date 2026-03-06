@@ -73,6 +73,24 @@
   ],
   "dataViewMappings": [
     {
+      "conditions": [
+        {
+          "sourceId": { "max": 1 },
+          "sourceName": { "max": 1 },
+          "sourceType": { "max": 1 },
+          "sourceWs": { "max": 1 },
+          "sourceStatus": { "max": 1 },
+          "sourceTime": { "max": 1 },
+          "sourceUrl": { "max": 1 },
+          "targetId": { "max": 1 },
+          "targetName": { "max": 1 },
+          "targetType": { "max": 1 },
+          "targetWs": { "max": 1 },
+          "targetStatus": { "max": 1 },
+          "targetTime": { "max": 1 },
+          "targetUrl": { "max": 1 }
+        }
+      ],
       "table": {
         "rows": {
           "select": [
