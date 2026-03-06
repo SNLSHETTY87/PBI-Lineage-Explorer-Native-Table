@@ -1,5 +1,7 @@
 # PBI Lineage Explorer
 
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/snlshetty87)
+
 A Power BI custom visual that renders an interactive, topological lineage graph showing how Dataflows, Datasets, and Reports connect across your Power BI tenant.
 
 ---
@@ -169,6 +171,14 @@ npm run lint     # ESLint check
 To test with the dev server in Power BI:
 1. Go to Power BI Service → Settings → Enable developer visual
 2. Add the **Developer Visual** from the visualization pane to a report
+
+---
+
+## Support
+
+If you find this visual useful, consider supporting the project:
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/snlshetty87)
 
 ---
 
