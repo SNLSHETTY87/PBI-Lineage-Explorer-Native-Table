@@ -33,6 +33,7 @@ A Power BI custom visual that renders an interactive, topological lineage graph 
 
 **Light Theme**
 ![Light Theme Support](assets/screenshot-light.png)
+
 ---
 
 ## Quick Start
