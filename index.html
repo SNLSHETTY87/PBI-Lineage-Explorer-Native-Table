@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PBI Lineage Explorer — Feature Overview</title>
-  <meta name="description" content="PBI Lineage Explorer is a Power BI custom visual that maps your entire data lineage — Dataflows, Datasets, and Reports — in one interactive topological graph. No DAX required." />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <meta name="description"
+    content="PBI Lineage Explorer is a Power BI custom visual that maps your entire data lineage — Dataflows, Datasets, and Reports — in one interactive topological graph. No DAX required." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
       --bg: #0d1117;
@@ -25,7 +34,9 @@
       --card-r: 14px;
     }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -45,8 +56,8 @@
       text-align: center;
       padding: 60px 24px;
       background: radial-gradient(ellipse 80% 60% at 50% -20%, #3b2d8855 0%, transparent 70%),
-                  radial-gradient(ellipse 60% 40% at 80% 80%, #4d9eff22 0%, transparent 70%),
-                  var(--bg);
+        radial-gradient(ellipse 60% 40% at 80% 80%, #4d9eff22 0%, transparent 70%),
+        var(--bg);
       position: relative;
       overflow: hidden;
     }
@@ -110,10 +121,23 @@
       gap: 8px;
     }
 
-    .pill .dot { width: 8px; height: 8px; border-radius: 50%; }
-    .dot-p { background: var(--accent); }
-    .dot-b { background: var(--accent2); }
-    .dot-o { background: var(--accent3); }
+    .pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .dot-p {
+      background: var(--accent);
+    }
+
+    .dot-b {
+      background: var(--accent2);
+    }
+
+    .dot-o {
+      background: var(--accent3);
+    }
 
     .scroll-hint {
       margin-top: 60px;
@@ -129,8 +153,15 @@
     }
 
     @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(8px); }
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(8px);
+      }
     }
 
     /* ── SECTION LAYOUT ── */
@@ -188,21 +219,33 @@
     .feat-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 2px;
       background: linear-gradient(90deg, transparent, var(--icon-color, var(--accent)), transparent);
       opacity: 0;
       transition: opacity .25s;
     }
 
-    .feat-card:hover { border-color: var(--icon-color, var(--accent)); transform: translateY(-4px); box-shadow: 0 12px 40px #0005; }
-    .feat-card:hover::before { opacity: 1; }
+    .feat-card:hover {
+      border-color: var(--icon-color, var(--accent));
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px #0005;
+    }
+
+    .feat-card:hover::before {
+      opacity: 1;
+    }
 
     .feat-icon {
-      width: 48px; height: 48px;
+      width: 48px;
+      height: 48px;
       border-radius: 12px;
       background: var(--icon-color, var(--accent));
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 22px;
       margin-bottom: 18px;
       flex-shrink: 0;
@@ -236,20 +279,34 @@
       position: relative;
     }
 
-    .step:last-child { border-bottom: none; }
+    .step:last-child {
+      border-bottom: none;
+    }
 
     .step-num {
-      width: 44px; height: 44px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
       flex-shrink: 0;
       margin-top: 2px;
     }
 
-    .step-content h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
-    .step-content p { color: var(--muted); font-size: 0.9rem; }
+    .step-content h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .step-content p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
 
     .step-badge {
       display: inline-block;
@@ -282,7 +339,11 @@
       letter-spacing: .5px;
     }
 
-    .schema-table { width: 100%; border-collapse: collapse; }
+    .schema-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
     .schema-table th {
       background: #ffffff08;
       padding: 12px 20px;
@@ -294,13 +355,20 @@
       color: var(--muted);
       border-bottom: 1px solid var(--border);
     }
+
     .schema-table td {
       padding: 12px 20px;
       font-size: 13px;
       border-bottom: 1px solid #ffffff08;
     }
-    .schema-table tr:last-child td { border-bottom: none; }
-    .schema-table tr:hover td { background: #ffffff04; }
+
+    .schema-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .schema-table tr:hover td {
+      background: #ffffff04;
+    }
 
     code {
       background: #7c6ee620;
@@ -315,16 +383,20 @@
       background: #3fb95020;
       color: var(--green);
       border: 1px solid #3fb95040;
-      padding: 2px 10px; border-radius: 100px;
-      font-size: 11px; font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
     }
 
     .badge-opt {
       background: #d2992220;
       color: var(--yellow);
       border: 1px solid #d2992240;
-      padding: 2px 10px; border-radius: 100px;
-      font-size: 11px; font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
     }
 
     /* ── STATUS TABLE ── */
@@ -344,27 +416,56 @@
     }
 
     .status-dot {
-      width: 14px; height: 14px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       flex-shrink: 0;
     }
 
-    .status-success .status-dot { background: var(--green); box-shadow: 0 0 10px var(--green); }
-    .status-failed .status-dot { background: var(--red); box-shadow: 0 0 10px var(--red); }
+    .status-success .status-dot {
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+    }
+
+    .status-failed .status-dot {
+      background: var(--red);
+      box-shadow: 0 0 10px var(--red);
+    }
+
     .status-progress .status-dot {
       background: var(--yellow);
       box-shadow: 0 0 10px var(--yellow);
       animation: pulse-dot 1.5s infinite;
     }
-    .status-none .status-dot { background: var(--muted); }
 
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: .6; transform: scale(1.3); }
+    .status-none .status-dot {
+      background: var(--muted);
     }
 
-    .status-label { font-size: 14px; font-weight: 600; }
-    .status-val { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: .6;
+        transform: scale(1.3);
+      }
+    }
+
+    .status-label {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .status-val {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
 
     /* ── NODE TYPES ── */
     .node-types {
@@ -386,20 +487,42 @@
       transition: transform .25s;
     }
 
-    .node-type-card:hover { transform: scale(1.02); }
+    .node-type-card:hover {
+      transform: scale(1.02);
+    }
 
     .node-dot-lg {
-      width: 18px; height: 18px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       flex-shrink: 0;
     }
 
-    .nd-df { background: var(--accent2); box-shadow: 0 0 12px var(--accent2); }
-    .nd-ds { background: var(--green); box-shadow: 0 0 12px var(--green); }
-    .nd-rp { background: var(--accent3); box-shadow: 0 0 12px var(--accent3); }
+    .nd-df {
+      background: var(--accent2);
+      box-shadow: 0 0 12px var(--accent2);
+    }
 
-    .nt-label { font-weight: 700; font-size: 15px; }
-    .nt-desc { font-size: 12px; color: var(--muted); margin-top: 3px; }
+    .nd-ds {
+      background: var(--green);
+      box-shadow: 0 0 12px var(--green);
+    }
+
+    .nd-rp {
+      background: var(--accent3);
+      box-shadow: 0 0 12px var(--accent3);
+    }
+
+    .nt-label {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .nt-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
 
     /* ── COMPARISON ── */
     .compare-grid {
@@ -408,7 +531,11 @@
       gap: 20px;
     }
 
-    @media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) {
+      .compare-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
     .compare-card {
       background: var(--surface);
@@ -427,10 +554,19 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .compare-head.old { background: #f8514908; }
-    .compare-head.new { background: #3fb95008; }
+    .compare-head.old {
+      background: #f8514908;
+    }
 
-    .compare-list { padding: 16px 22px; list-style: none; }
+    .compare-head.new {
+      background: #3fb95008;
+    }
+
+    .compare-list {
+      padding: 16px 22px;
+      list-style: none;
+    }
+
     .compare-list li {
       display: flex;
       align-items: flex-start;
@@ -440,9 +576,16 @@
       color: var(--muted);
       border-bottom: 1px solid #ffffff06;
     }
-    .compare-list li:last-child { border-bottom: none; }
 
-    .ci { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+    .compare-list li:last-child {
+      border-bottom: none;
+    }
+
+    .ci {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
 
     /* ── CTA ── */
     .cta-block {
@@ -453,13 +596,28 @@
       text-align: center;
     }
 
-    .cta-block h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; margin-bottom: 14px; }
-    .cta-block p { color: var(--muted); margin-bottom: 32px; }
+    .cta-block h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
 
-    .btn-group { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .cta-block p {
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
 
     .btn {
-      display: inline-flex; align-items: center; gap: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       padding: 13px 28px;
       border-radius: 10px;
       font-weight: 600;
@@ -468,9 +626,21 @@
       transition: opacity .2s, transform .2s;
     }
 
-    .btn:hover { opacity: .88; transform: translateY(-2px); }
-    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
-    .btn-secondary { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
+    .btn:hover {
+      opacity: .88;
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
 
     /* ── FOOTER ── */
     footer {
@@ -484,7 +654,8 @@
     /* ── NAV ── */
     nav {
       position: sticky;
-      top: 0; z-index: 100;
+      top: 0;
+      z-index: 100;
       background: rgba(13, 17, 23, 0.85);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
@@ -500,14 +671,39 @@
       height: 56px;
     }
 
-    .nav-logo { font-weight: 800; font-size: 15px; letter-spacing: .3px; }
-    .nav-logo span { color: var(--accent); }
+    .nav-logo {
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: .3px;
+    }
 
-    .nav-links { display: flex; gap: 28px; list-style: none; }
-    .nav-links a { text-decoration: none; color: var(--muted); font-size: 13.5px; font-weight: 500; transition: color .2s; }
-    .nav-links a:hover { color: var(--text); }
+    .nav-logo span {
+      color: var(--accent);
+    }
 
-    @media (max-width: 600px) { .nav-links { display: none; } }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13.5px;
+      font-weight: 500;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 600px) {
+      .nav-links {
+        display: none;
+      }
+    }
 
     /* ── DIAGRAM ── */
     .lineage-demo {
@@ -542,24 +738,72 @@
       position: relative;
     }
 
-    .ld-node:hover { transform: scale(1.06); z-index: 2; }
+    .ld-node:hover {
+      transform: scale(1.06);
+      z-index: 2;
+    }
 
-    .ld-node.df { background: #4d9eff15; border-color: var(--accent2); }
-    .ld-node.ds { background: #3fb95015; border-color: var(--green); }
-    .ld-node.rp { background: #fb923c15; border-color: var(--accent3); }
+    .ld-node.df {
+      background: #4d9eff15;
+      border-color: var(--accent2);
+    }
 
-    .ld-node-type { font-size: 10px; opacity: .6; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 4px; }
-    .ld-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 5px; }
-    .ld-node.df .ld-dot { background: var(--accent2); }
-    .ld-node.ds .ld-dot { background: var(--green); }
-    .ld-node.rp .ld-dot { background: var(--accent3); }
+    .ld-node.ds {
+      background: #3fb95015;
+      border-color: var(--green);
+    }
+
+    .ld-node.rp {
+      background: #fb923c15;
+      border-color: var(--accent3);
+    }
+
+    .ld-node-type {
+      font-size: 10px;
+      opacity: .6;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 4px;
+    }
+
+    .ld-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    .ld-node.df .ld-dot {
+      background: var(--accent2);
+    }
+
+    .ld-node.ds .ld-dot {
+      background: var(--green);
+    }
+
+    .ld-node.rp .ld-dot {
+      background: var(--accent3);
+    }
 
     .ld-status {
-      width: 8px; height: 8px; border-radius: 50%;
-      position: absolute; top: 8px; right: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      position: absolute;
+      top: 8px;
+      right: 8px;
     }
-    .st-ok { background: var(--green); box-shadow: 0 0 6px var(--green); }
-    .st-fail { background: var(--red); box-shadow: 0 0 6px var(--red); }
+
+    .st-ok {
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+    }
+
+    .st-fail {
+      background: var(--red);
+      box-shadow: 0 0 6px var(--red);
+    }
 
     .ld-arrow {
       width: 50px;
@@ -583,353 +827,478 @@
     }
   </style>
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-inner">
-    <div class="nav-logo">PBI Lineage <span>Explorer</span></div>
-    <ul class="nav-links">
-      <li><a href="#features">Features</a></li>
-      <li><a href="#how-it-works">Setup</a></li>
-      <li><a href="#data-model">Data Model</a></li>
-      <li><a href="#comparison">What's New</a></li>
-      <li><a href="#get-started">Get Started</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-badge">Power BI Custom Visual — v1.0.0.5</div>
-  <h1>PBI Lineage Explorer<br/>(Native Table Edition)</h1>
-  <p class="hero-sub">Visualise your entire Power BI data lineage — Dataflows, Datasets, Reports — in one interactive topological graph. No DAX required.</p>
-  <div class="hero-meta">
-    <div class="pill"><span class="dot dot-b"></span>Native Table Input</div>
-    <div class="pill"><span class="dot dot-p"></span>Cross-Workspace Lineage</div>
-    <div class="pill"><span class="dot dot-o"></span>Refresh Status Tracking</div>
-  </div>
-  <div class="scroll-hint">
-    <span>▼</span>
-    <span>Scroll to explore</span>
-  </div>
-</div>
-
-<!-- LIVE DEMO DIAGRAM -->
-<section>
-  <div class="section-label">Visual Layout</div>
-  <div class="section-title">See the lineage at a glance</div>
-  <p class="section-desc">Nodes are automatically arranged left-to-right by dependency depth. Edges use smooth S-curves with directional arrows showing data flow direction.</p>
-
-  <div class="lineage-demo">
-    <div class="ld-stage">
-      <div class="stage-label">Dataflows</div>
-      <div class="ld-node df"><div class="ld-node-type"><span class="ld-dot"></span>Dataflow</div>Sales DF<div class="ld-status st-ok"></div></div>
-      <div class="ld-node df"><div class="ld-node-type"><span class="ld-dot"></span>Dataflow</div>HR DF<div class="ld-status st-ok"></div></div>
-      <div class="ld-node df"><div class="ld-node-type"><span class="ld-dot"></span>Dataflow</div>Finance DF<div class="ld-status st-fail"></div></div>
-    </div>
-    <div class="ld-arrow">⟶</div>
-    <div class="ld-stage">
-      <div class="stage-label">Datasets</div>
-      <div class="ld-node ds"><div class="ld-node-type"><span class="ld-dot"></span>Dataset</div>Sales Model<div class="ld-status st-ok"></div></div>
-      <div class="ld-node ds"><div class="ld-node-type"><span class="ld-dot"></span>Dataset</div>HR Model<div class="ld-status st-ok"></div></div>
-      <div class="ld-node ds"><div class="ld-node-type"><span class="ld-dot"></span>Dataset</div>Finance Model<div class="ld-status st-fail"></div></div>
-    </div>
-    <div class="ld-arrow">⟶</div>
-    <div class="ld-stage">
-      <div class="stage-label">Reports</div>
-      <div class="ld-node rp"><div class="ld-node-type"><span class="ld-dot"></span>Report</div>Sales Dashboard</div>
-      <div class="ld-node rp"><div class="ld-node-type"><span class="ld-dot"></span>Report</div>HR Overview</div>
-      <div class="ld-node rp"><div class="ld-node-type"><span class="ld-dot"></span>Report</div>Exec Summary</div>
-      <div class="ld-node rp"><div class="ld-node-type"><span class="ld-dot"></span>Report</div>Finance Report</div>
-    </div>
-  </div>
-</section>
-
-<hr class="div-line" />
-
-<!-- FEATURES -->
-<section id="features">
-  <div class="section-label">Capabilities</div>
-  <div class="section-title">Everything you need to understand your data lineage</div>
-  <p class="section-desc">All features are built into the visual — no external services, scripts, or APIs needed at runtime.</p>
-
-  <div class="feature-grid">
-    <div class="feat-card" style="--icon-color:#4d9eff">
-      <div class="feat-icon">🗺️</div>
-      <div class="feat-title">Topological Stage Layout</div>
-      <div class="feat-desc">Nodes are automatically ranked and placed in columns by their dependency depth, giving you an instant visual understanding of your pipeline stages.</div>
-    </div>
-
-    <div class="feat-card" style="--icon-color:#7c6ee6">
-      <div class="feat-icon">🔗</div>
-      <div class="feat-title">S-Curve Edges with Direction</div>
-      <div class="feat-desc">Dependencies are drawn as smooth Bezier S-curves with directional arrows, making it easy to trace data flow from source to destination.</div>
-    </div>
-
-    <div class="feat-card" style="--icon-color:#fb923c">
-      <div class="feat-icon">🔍</div>
-      <div class="feat-title">Click-to-Highlight Lineage</div>
-      <div class="feat-desc">Click any node to instantly highlight its full upstream and downstream dependencies. Everything else fades out for laser-focused analysis.</div>
-    </div>
-
-    <div class="feat-card" style="--icon-color:#3fb950">
-      <div class="feat-icon">📋</div>
-      <div class="feat-title">Right Panel – Lineage List</div>
-      <div class="feat-desc">Selecting a node opens a detailed panel listing all upstream and downstream items, with direct/indirect indicators and workspace labels.</div>
-    </div>
-
-    <div class="feat-card" style="--icon-color:#f85149">
-      <div class="feat-icon">⚡</div>
-      <div class="feat-title">Impact Analysis Bar</div>
-      <div class="feat-desc">An impact bar shows you exactly how many datasets and reports depend on a selected node. Know the blast radius before you make a change.</div>
-    </div>
-
-    <div class="feat-card" style="--icon-color:#d29922">
-      <div class="feat-icon">🕐</div>
-      <div class="feat-title">Refresh Status Badges</div>
-      <div class="feat-desc">Each node can display a Success, Failed, or In Progress refresh badge with a relative timestamp (e.g. "2h ago"), colour-coded for at-a-glance status.</div>
-    </div>
-
-    <div class="feat-card" style="--icon-color:#4d9eff">
-      <div class="feat-icon">🏢</div>
-      <div class="feat-title">Workspace Filters + Legend</div>
-      <div class="feat-desc">Filter by one or more workspaces using the multi-select panel. Each workspace gets a unique colour, shown in the legend and on every node card.</div>
-    </div>
-
-    <div class="feat-card" style="--icon-color:#fb923c">
-      <div class="feat-icon">📊</div>
-      <div class="feat-title">Report & Dataflow Filters</div>
-      <div class="feat-desc">Search and filter to focus only on the Dataflows or Reports you care about. The graph re-renders instantly showing only the relevant lineage paths.</div>
-    </div>
-
-    <div class="feat-card" style="--icon-color:#7c6ee6">
-      <div class="feat-icon">💀</div>
-      <div class="feat-title">Failed-Only Filter</div>
-      <div class="feat-desc">One click to hide all successful nodes and surface only failed refreshes. Perfect for rapid incident triage across your entire tenant.</div>
-    </div>
-
-    <div class="feat-card" style="--icon-color:#3fb950">
-      <div class="feat-icon">📐</div>
-      <div class="feat-title">Stage Collapse</div>
-      <div class="feat-desc">Collapse any pipeline stage column to declutter the view and focus on the remaining stages. Collapsed stages remain labelled for context.</div>
-    </div>
-
-    <div class="feat-card" style="--icon-color:#f85149">
-      <div class="feat-icon">🔭</div>
-      <div class="feat-title">Normal / Compact Toggle</div>
-      <div class="feat-desc">Switch between a full card view (with metadata) and a compact view for very large graphs with hundreds of nodes.</div>
-    </div>
-
-    <div class="feat-card" style="--icon-color:#d29922">
-      <div class="feat-icon">🔎</div>
-      <div class="feat-title">Node Name Search</div>
-      <div class="feat-desc">Search across all node names in real time. Matching nodes are highlighted; non-matching nodes are dimmed. Press <code>Ctrl+F</code> to jump straight to search.</div>
-    </div>
-  </div>
-</section>
-
-<hr class="div-line" />
-
-<!-- NODE TYPES -->
-<section>
-  <div class="section-label">Node Types</div>
-  <div class="section-title">Three types of Power BI artefacts</div>
-  <p class="section-desc">The visual understands and distinguishes three types of Power BI items, each colour coded consistently throughout the entire UI.</p>
-  <div class="node-types">
-    <div class="node-type-card">
-      <div class="node-dot-lg nd-df"></div>
-      <div>
-        <div class="nt-label">Dataflow</div>
-        <div class="nt-desc">Gen1 or Gen2 Power BI Dataflows. Appears in the leftmost stage.</div>
-      </div>
-    </div>
-    <div class="node-type-card">
-      <div class="node-dot-lg nd-ds"></div>
-      <div>
-        <div class="nt-label">Dataset / Semantic Model</div>
-        <div class="nt-desc">Power BI Datasets (Semantic Models). Middle stage, downstream from Dataflows.</div>
-      </div>
-    </div>
-    <div class="node-type-card">
-      <div class="node-dot-lg nd-rp"></div>
-      <div>
-        <div class="nt-label">Report</div>
-        <div class="nt-desc">Power BI Reports. Rightmost stage, downstream from Datasets.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="div-line" />
-
-<!-- STATUS -->
-<section>
-  <div class="section-label">Refresh Status</div>
-  <div class="section-title">Know the health of every artefact instantly</div>
-  <p class="section-desc">Supply refresh status data from your Refresh History API call, and the visual will display colour-coded badges on every node card.</p>
-  <div class="status-grid">
-    <div class="status-card status-success">
-      <div class="status-dot"></div>
-      <div>
-        <div class="status-label">Success</div>
-        <div class="status-val">Value: <code>success</code></div>
-      </div>
-    </div>
-    <div class="status-card status-failed">
-      <div class="status-dot"></div>
-      <div>
-        <div class="status-label">Failed</div>
-        <div class="status-val">Value: <code>failed</code></div>
-      </div>
-    </div>
-    <div class="status-card status-progress">
-      <div class="status-dot"></div>
-      <div>
-        <div class="status-label">In Progress</div>
-        <div class="status-val">Value: <code>progress</code></div>
-      </div>
-    </div>
-    <div class="status-card status-none">
-      <div class="status-dot"></div>
-      <div>
-        <div class="status-label">No Data</div>
-        <div class="status-val">Leave column blank</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="div-line" />
-
-<!-- DATA MODEL -->
-<section id="data-model">
-  <div class="section-label">Data Model</div>
-  <div class="section-title">One flat table, 14 columns</div>
-  <p class="section-desc">Each row in the table represents a single lineage connection between an upstream (source) and downstream (target) artefact. No DAX or JSON required.</p>
-
-  <div class="schema-block">
-    <div class="schema-header">📋 Lineage Table Schema</div>
-    <table class="schema-table">
-      <thead>
-        <tr>
-          <th>Column</th>
-          <th>Type</th>
-          <th>Required</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td><code>sourceId</code></td><td>Text</td><td><span class="badge-req">Required</span></td><td>Unique ID for the upstream node</td></tr>
-        <tr><td><code>sourceName</code></td><td>Text</td><td><span class="badge-opt">Optional</span></td><td>Display name of the upstream item</td></tr>
-        <tr><td><code>sourceType</code></td><td>Text</td><td><span class="badge-opt">Optional</span></td><td>One of: <code>Dataflow</code>, <code>Dataset</code>, <code>Report</code></td></tr>
-        <tr><td><code>sourceWs</code></td><td>Text</td><td><span class="badge-opt">Optional</span></td><td>Workspace display name for the upstream item</td></tr>
-        <tr><td><code>sourceStatus</code></td><td>Text</td><td><span class="badge-opt">Optional</span></td><td><code>success</code>, <code>failed</code>, or <code>progress</code></td></tr>
-        <tr><td><code>sourceTime</code></td><td>DateTime</td><td><span class="badge-opt">Optional</span></td><td>Last refresh timestamp for the upstream item</td></tr>
-        <tr><td><code>sourceUrl</code></td><td>Text</td><td><span class="badge-opt">Optional</span></td><td>Direct URL link to item in Power BI Service</td></tr>
-        <tr><td><code>targetId</code></td><td>Text</td><td><span class="badge-req">Required</span></td><td>Unique ID for the downstream node</td></tr>
-        <tr><td><code>targetName</code></td><td>Text</td><td><span class="badge-opt">Optional</span></td><td>Display name of the downstream item</td></tr>
-        <tr><td><code>targetType</code></td><td>Text</td><td><span class="badge-opt">Optional</span></td><td>One of: <code>Dataflow</code>, <code>Dataset</code>, <code>Report</code></td></tr>
-        <tr><td><code>targetWs</code></td><td>Text</td><td><span class="badge-opt">Optional</span></td><td>Workspace display name for the downstream item</td></tr>
-        <tr><td><code>targetStatus</code></td><td>Text</td><td><span class="badge-opt">Optional</span></td><td><code>success</code>, <code>failed</code>, or <code>progress</code></td></tr>
-        <tr><td><code>targetTime</code></td><td>DateTime</td><td><span class="badge-opt">Optional</span></td><td>Last refresh timestamp for the downstream item</td></tr>
-        <tr><td><code>targetUrl</code></td><td>Text</td><td><span class="badge-opt">Optional</span></td><td>Direct URL link to item in Power BI Service</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<hr class="div-line" />
-
-<!-- HOW IT WORKS -->
-<section id="how-it-works">
-  <div class="section-label">Setup</div>
-  <div class="section-title">Get up and running in 4 steps</div>
-  <p class="section-desc">No complex DAX measures or JSON exports — just a flat table and field well mappings.</p>
-
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <h3>Import the visual <span class="step-badge">One-time</span></h3>
-        <p>Download the latest <code>.pbiviz</code> file from the GitHub releases page. In Power BI Desktop: <strong>Insert → More visuals → Import from file</strong>.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <h3>Prepare your flat table</h3>
-        <p>Use Power Query to call the Power BI REST API and build a Nodes table and Edges table, then Merge them on NodeId to create a single flat lineage table. Or use <strong>Enter Data</strong> with sample rows for testing.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <h3>Map the field wells</h3>
-        <p>Add the visual to your report canvas. Drag your table columns into the 14 field wells — <code>sourceId</code>, <code>sourceName</code>, <code>sourceType</code>, <code>sourceWs</code> and their <code>target</code> equivalents.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <h3>Explore your lineage</h3>
-        <p>The visual renders automatically. Use the Workspace, Dataflow, and Report filters to drill down. Click any node to trace its full upstream/downstream lineage and see the impact bar.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="div-line" />
-
-<!-- COMPARISON -->
-<section id="comparison">
-  <div class="section-label">What's New — Native Table vs. Old JSON Edition</div>
-  <div class="section-title">Why we upgraded the data model</div>
-  <p class="section-desc">The old edition required complex DAX measures that generated JSON strings. The new native table edition eliminates all of that complexity.</p>
-
-  <div class="compare-grid">
-    <div class="compare-card">
-      <div class="compare-head old">❌ Old — JSON Measure Edition</div>
-      <ul class="compare-list">
-        <li><span class="ci">⚠️</span>Required complex TOJSON / CONCATENATEX DAX measures</li>
-        <li><span class="ci">⚠️</span>JSON string had to be manually constructed in DAX</li>
-        <li><span class="ci">⚠️</span>Special character escaping issues (&amp;amp; etc.)</li>
-        <li><span class="ci">⚠️</span>Very difficult to debug when something went wrong</li>
-        <li><span class="ci">⚠️</span>Hard to add new fields or properties</li>
-        <li><span class="ci">⚠️</span>Limited to what fit in the DAX measure output size</li>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">PBI Lineage <span>Explorer</span></div>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">Setup</a></li>
+        <li><a href="#data-model">Data Model</a></li>
+        <li><a href="#comparison">What's New</a></li>
+        <li><a href="#get-started">Get Started</a></li>
       </ul>
     </div>
-    <div class="compare-card">
-      <div class="compare-head new">✅ New — Native Table Edition</div>
-      <ul class="compare-list">
-        <li><span class="ci">🚀</span>Direct table binding — just drag and drop columns</li>
-        <li><span class="ci">🚀</span>Zero DAX measures required</li>
-        <li><span class="ci">🚀</span>Handles special characters natively</li>
-        <li><span class="ci">🚀</span>Easy to debug — just look at the table in Power BI</li>
-        <li><span class="ci">🚀</span>Can handle up to 30,000 rows via dataReductionAlgorithm</li>
-        <li><span class="ci">🚀</span>Fully future-proof — add new columns without changing DAX</li>
-      </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Power BI Custom Visual — v1.0.0.5</div>
+    <h1>PBI Lineage Explorer<br />(Native Table Edition)</h1>
+    <p class="hero-sub">Visualise your entire Power BI data lineage — Dataflows, Datasets, Reports — in one interactive
+      topological graph. No DAX required.</p>
+    <div class="hero-meta">
+      <div class="pill"><span class="dot dot-b"></span>Native Table Input</div>
+      <div class="pill"><span class="dot dot-p"></span>Cross-Workspace Lineage</div>
+      <div class="pill"><span class="dot dot-o"></span>Refresh Status Tracking</div>
+    </div>
+    <div class="scroll-hint">
+      <span>▼</span>
+      <span>Scroll to explore</span>
     </div>
   </div>
-</section>
 
-<hr class="div-line" />
+  <!-- LIVE DEMO DIAGRAM -->
+  <section>
+    <div class="section-label">Visual Layout</div>
+    <div class="section-title">See the lineage at a glance</div>
+    <p class="section-desc">Nodes are automatically arranged left-to-right by dependency depth. Edges use smooth
+      S-curves with directional arrows showing data flow direction.</p>
 
-<!-- CTA -->
-<section id="get-started">
-  <div class="cta-block">
-    <h2>Ready to explore your lineage?</h2>
-    <p>Download the visual and start mapping your Power BI ecosystem in minutes.</p>
-    <div class="btn-group">
-      <a class="btn btn-primary" href="https://github.com/SNLSHETTY87/PBI-Lineage-Explorer-Native-Table/releases" target="_blank">⬇️ Download .pbiviz</a>
-      <a class="btn btn-secondary" href="https://github.com/SNLSHETTY87/PBI-Lineage-Explorer-Native-Table" target="_blank">📦 View on GitHub</a>
+    <div class="lineage-demo">
+      <div class="ld-stage">
+        <div class="stage-label">Dataflows</div>
+        <div class="ld-node df">
+          <div class="ld-node-type"><span class="ld-dot"></span>Dataflow</div>Sales DF<div class="ld-status st-ok">
+          </div>
+        </div>
+        <div class="ld-node df">
+          <div class="ld-node-type"><span class="ld-dot"></span>Dataflow</div>HR DF<div class="ld-status st-ok"></div>
+        </div>
+        <div class="ld-node df">
+          <div class="ld-node-type"><span class="ld-dot"></span>Dataflow</div>Finance DF<div class="ld-status st-fail">
+          </div>
+        </div>
+      </div>
+      <div class="ld-arrow">⟶</div>
+      <div class="ld-stage">
+        <div class="stage-label">Datasets</div>
+        <div class="ld-node ds">
+          <div class="ld-node-type"><span class="ld-dot"></span>Dataset</div>Sales Model<div class="ld-status st-ok">
+          </div>
+        </div>
+        <div class="ld-node ds">
+          <div class="ld-node-type"><span class="ld-dot"></span>Dataset</div>HR Model<div class="ld-status st-ok"></div>
+        </div>
+        <div class="ld-node ds">
+          <div class="ld-node-type"><span class="ld-dot"></span>Dataset</div>Finance Model<div
+            class="ld-status st-fail"></div>
+        </div>
+      </div>
+      <div class="ld-arrow">⟶</div>
+      <div class="ld-stage">
+        <div class="stage-label">Reports</div>
+        <div class="ld-node rp">
+          <div class="ld-node-type"><span class="ld-dot"></span>Report</div>Sales Dashboard
+        </div>
+        <div class="ld-node rp">
+          <div class="ld-node-type"><span class="ld-dot"></span>Report</div>HR Overview
+        </div>
+        <div class="ld-node rp">
+          <div class="ld-node-type"><span class="ld-dot"></span>Report</div>Exec Summary
+        </div>
+        <div class="ld-node rp">
+          <div class="ld-node-type"><span class="ld-dot"></span>Report</div>Finance Report
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<footer>
-  <p>Built by <strong>Sunil Shetty</strong> · <a href="mailto:snlshetty87@gmail.com" style="color:var(--accent2);text-decoration:none;">snlshetty87@gmail.com</a> · PBI Lineage Explorer Native Table Edition v1.0.0.5</p>
-</footer>
+  <hr class="div-line" />
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="section-label">Capabilities</div>
+    <div class="section-title">Everything you need to understand your data lineage</div>
+    <p class="section-desc">All features are built into the visual — no external services, scripts, or APIs needed at
+      runtime.</p>
+
+    <div class="feature-grid">
+      <div class="feat-card" style="--icon-color:#4d9eff">
+        <div class="feat-icon">🗺️</div>
+        <div class="feat-title">Topological Stage Layout</div>
+        <div class="feat-desc">Nodes are automatically ranked and placed in columns by their dependency depth, giving
+          you an instant visual understanding of your pipeline stages.</div>
+      </div>
+
+      <div class="feat-card" style="--icon-color:#7c6ee6">
+        <div class="feat-icon">🔗</div>
+        <div class="feat-title">S-Curve Edges with Direction</div>
+        <div class="feat-desc">Dependencies are drawn as smooth Bezier S-curves with directional arrows, making it easy
+          to trace data flow from source to destination.</div>
+      </div>
+
+      <div class="feat-card" style="--icon-color:#fb923c">
+        <div class="feat-icon">🔍</div>
+        <div class="feat-title">Click-to-Highlight Lineage</div>
+        <div class="feat-desc">Click any node to instantly highlight its full upstream and downstream dependencies.
+          Everything else fades out for laser-focused analysis.</div>
+      </div>
+
+      <div class="feat-card" style="--icon-color:#3fb950">
+        <div class="feat-icon">📋</div>
+        <div class="feat-title">Right Panel – Lineage List</div>
+        <div class="feat-desc">Selecting a node opens a detailed panel listing all upstream and downstream items, with
+          direct/indirect indicators and workspace labels.</div>
+      </div>
+
+      <div class="feat-card" style="--icon-color:#f85149">
+        <div class="feat-icon">⚡</div>
+        <div class="feat-title">Impact Analysis Bar</div>
+        <div class="feat-desc">An impact bar shows you exactly how many datasets and reports depend on a selected node.
+          Know the blast radius before you make a change.</div>
+      </div>
+
+      <div class="feat-card" style="--icon-color:#d29922">
+        <div class="feat-icon">🕐</div>
+        <div class="feat-title">Refresh Status Badges</div>
+        <div class="feat-desc">Each node can display a Success, Failed, or In Progress refresh badge with a relative
+          timestamp (e.g. "2h ago"), colour-coded for at-a-glance status.</div>
+      </div>
+
+      <div class="feat-card" style="--icon-color:#4d9eff">
+        <div class="feat-icon">🏢</div>
+        <div class="feat-title">Workspace Filters + Legend</div>
+        <div class="feat-desc">Filter by one or more workspaces using the multi-select panel. Each workspace gets a
+          unique colour, shown in the legend and on every node card.</div>
+      </div>
+
+      <div class="feat-card" style="--icon-color:#fb923c">
+        <div class="feat-icon">📊</div>
+        <div class="feat-title">Report & Dataflow Filters</div>
+        <div class="feat-desc">Search and filter to focus only on the Dataflows or Reports you care about. The graph
+          re-renders instantly showing only the relevant lineage paths.</div>
+      </div>
+
+      <div class="feat-card" style="--icon-color:#7c6ee6">
+        <div class="feat-icon">💀</div>
+        <div class="feat-title">Failed-Only Filter</div>
+        <div class="feat-desc">One click to hide all successful nodes and surface only failed refreshes. Perfect for
+          rapid incident triage across your entire tenant.</div>
+      </div>
+
+      <div class="feat-card" style="--icon-color:#3fb950">
+        <div class="feat-icon">📐</div>
+        <div class="feat-title">Stage Collapse</div>
+        <div class="feat-desc">Collapse any pipeline stage column to declutter the view and focus on the remaining
+          stages. Collapsed stages remain labelled for context.</div>
+      </div>
+
+      <div class="feat-card" style="--icon-color:#f85149">
+        <div class="feat-icon">🔭</div>
+        <div class="feat-title">Normal / Compact Toggle</div>
+        <div class="feat-desc">Switch between a full card view (with metadata) and a compact view for very large graphs
+          with hundreds of nodes.</div>
+      </div>
+
+      <div class="feat-card" style="--icon-color:#d29922">
+        <div class="feat-icon">🔎</div>
+        <div class="feat-title">Node Name Search</div>
+        <div class="feat-desc">Search across all node names in real time. Matching nodes are highlighted; non-matching
+          nodes are dimmed. Press <code>Ctrl+F</code> to jump straight to search.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div-line" />
+
+  <!-- NODE TYPES -->
+  <section>
+    <div class="section-label">Node Types</div>
+    <div class="section-title">Three types of Power BI artefacts</div>
+    <p class="section-desc">The visual understands and distinguishes three types of Power BI items, each colour coded
+      consistently throughout the entire UI.</p>
+    <div class="node-types">
+      <div class="node-type-card">
+        <div class="node-dot-lg nd-df"></div>
+        <div>
+          <div class="nt-label">Dataflow</div>
+          <div class="nt-desc">Gen1 or Gen2 Power BI Dataflows. Appears in the leftmost stage.</div>
+        </div>
+      </div>
+      <div class="node-type-card">
+        <div class="node-dot-lg nd-ds"></div>
+        <div>
+          <div class="nt-label">Dataset / Semantic Model</div>
+          <div class="nt-desc">Power BI Datasets (Semantic Models). Middle stage, downstream from Dataflows.</div>
+        </div>
+      </div>
+      <div class="node-type-card">
+        <div class="node-dot-lg nd-rp"></div>
+        <div>
+          <div class="nt-label">Report</div>
+          <div class="nt-desc">Power BI Reports. Rightmost stage, downstream from Datasets.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div-line" />
+
+  <!-- STATUS -->
+  <section>
+    <div class="section-label">Refresh Status</div>
+    <div class="section-title">Know the health of every artefact instantly</div>
+    <p class="section-desc">Supply refresh status data from your Refresh History API call, and the visual will display
+      colour-coded badges on every node card.</p>
+    <div class="status-grid">
+      <div class="status-card status-success">
+        <div class="status-dot"></div>
+        <div>
+          <div class="status-label">Success</div>
+          <div class="status-val">Value: <code>success</code></div>
+        </div>
+      </div>
+      <div class="status-card status-failed">
+        <div class="status-dot"></div>
+        <div>
+          <div class="status-label">Failed</div>
+          <div class="status-val">Value: <code>failed</code></div>
+        </div>
+      </div>
+      <div class="status-card status-progress">
+        <div class="status-dot"></div>
+        <div>
+          <div class="status-label">In Progress</div>
+          <div class="status-val">Value: <code>progress</code></div>
+        </div>
+      </div>
+      <div class="status-card status-none">
+        <div class="status-dot"></div>
+        <div>
+          <div class="status-label">No Data</div>
+          <div class="status-val">Leave column blank</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div-line" />
+
+  <!-- DATA MODEL -->
+  <section id="data-model">
+    <div class="section-label">Data Model</div>
+    <div class="section-title">One flat table, 14 columns</div>
+    <p class="section-desc">Each row in the table represents a single lineage connection between an upstream (source)
+      and downstream (target) artefact. No DAX or JSON required.</p>
+
+    <div class="schema-block">
+      <div class="schema-header">📋 Lineage Table Schema</div>
+      <table class="schema-table">
+        <thead>
+          <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>sourceId</code></td>
+            <td>Text</td>
+            <td><span class="badge-req">Required</span></td>
+            <td>Unique ID for the upstream node</td>
+          </tr>
+          <tr>
+            <td><code>sourceName</code></td>
+            <td>Text</td>
+            <td><span class="badge-opt">Required</span></td>
+            <td>Display name of the upstream item</td>
+          </tr>
+          <tr>
+            <td><code>sourceType</code></td>
+            <td>Text</td>
+            <td><span class="badge-opt">Required</span></td>
+            <td>One of: <code>Dataflow</code>, <code>Dataset</code>, <code>Report</code></td>
+          </tr>
+          <tr>
+            <td><code>sourceWs</code></td>
+            <td>Text</td>
+            <td><span class="badge-opt">Required</span></td>
+            <td>Workspace display name for the upstream item</td>
+          </tr>
+          <tr>
+            <td><code>sourceStatus</code></td>
+            <td>Text</td>
+            <td><span class="badge-opt">Optional</span></td>
+            <td><code>success</code>, <code>failed</code>, or <code>progress</code></td>
+          </tr>
+          <tr>
+            <td><code>sourceTime</code></td>
+            <td>DateTime</td>
+            <td><span class="badge-opt">Optional</span></td>
+            <td>Last refresh timestamp for the upstream item</td>
+          </tr>
+          <tr>
+            <td><code>sourceUrl</code></td>
+            <td>Text</td>
+            <td><span class="badge-opt">Optional</span></td>
+            <td>Direct URL link to item in Power BI Service</td>
+          </tr>
+          <tr>
+            <td><code>targetId</code></td>
+            <td>Text</td>
+            <td><span class="badge-req">Required</span></td>
+            <td>Unique ID for the downstream node</td>
+          </tr>
+          <tr>
+            <td><code>targetName</code></td>
+            <td>Text</td>
+            <td><span class="badge-opt">Required</span></td>
+            <td>Display name of the downstream item</td>
+          </tr>
+          <tr>
+            <td><code>targetType</code></td>
+            <td>Text</td>
+            <td><span class="badge-opt">Required</span></td>
+            <td>One of: <code>Dataflow</code>, <code>Dataset</code>, <code>Report</code></td>
+          </tr>
+          <tr>
+            <td><code>targetWs</code></td>
+            <td>Text</td>
+            <td><span class="badge-opt">Required</span></td>
+            <td>Workspace display name for the downstream item</td>
+          </tr>
+          <tr>
+            <td><code>targetStatus</code></td>
+            <td>Text</td>
+            <td><span class="badge-opt">Optional</span></td>
+            <td><code>success</code>, <code>failed</code>, or <code>progress</code></td>
+          </tr>
+          <tr>
+            <td><code>targetTime</code></td>
+            <td>DateTime</td>
+            <td><span class="badge-opt">Optional</span></td>
+            <td>Last refresh timestamp for the downstream item</td>
+          </tr>
+          <tr>
+            <td><code>targetUrl</code></td>
+            <td>Text</td>
+            <td><span class="badge-opt">Optional</span></td>
+            <td>Direct URL link to item in Power BI Service</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="div-line" />
+
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works">
+    <div class="section-label">Setup</div>
+    <div class="section-title">Get up and running in 4 steps</div>
+    <p class="section-desc">No complex DAX measures or JSON exports — just a flat table and field well mappings.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Import the visual <span class="step-badge">One-time</span></h3>
+          <p>Download the latest <code>.pbiviz</code> file from the GitHub releases page. In Power BI Desktop:
+            <strong>Insert → More visuals → Import from file</strong>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Prepare your flat table</h3>
+          <p>Use Power Query to call the Power BI REST API and build a Nodes table and Edges table, then Merge them on
+            NodeId to create a single flat lineage table. Or use <strong>Enter Data</strong> with sample rows for
+            testing.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Map the field wells</h3>
+          <p>Add the visual to your report canvas. Drag your table columns into the 14 field wells —
+            <code>sourceId</code>, <code>sourceName</code>, <code>sourceType</code>, <code>sourceWs</code> and their
+            <code>target</code> equivalents.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h3>Explore your lineage</h3>
+          <p>The visual renders automatically. Use the Workspace, Dataflow, and Report filters to drill down. Click any
+            node to trace its full upstream/downstream lineage and see the impact bar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div-line" />
+
+  <!-- COMPARISON -->
+  <section id="comparison">
+    <div class="section-label">What's New — Native Table vs. Old JSON Edition</div>
+    <div class="section-title">Why we upgraded the data model</div>
+    <p class="section-desc">The old edition required complex DAX measures that generated JSON strings. The new native
+      table edition eliminates all of that complexity.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-head old">❌ Old — JSON Measure Edition</div>
+        <ul class="compare-list">
+          <li><span class="ci">⚠️</span>Required complex TOJSON / CONCATENATEX DAX measures</li>
+          <li><span class="ci">⚠️</span>JSON string had to be manually constructed in DAX</li>
+          <li><span class="ci">⚠️</span>Special character escaping issues (&amp;amp; etc.)</li>
+          <li><span class="ci">⚠️</span>Very difficult to debug when something went wrong</li>
+          <li><span class="ci">⚠️</span>Hard to add new fields or properties</li>
+          <li><span class="ci">⚠️</span>Limited to what fit in the DAX measure output size</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <div class="compare-head new">✅ New — Native Table Edition</div>
+        <ul class="compare-list">
+          <li><span class="ci">🚀</span>Direct table binding — just drag and drop columns</li>
+          <li><span class="ci">🚀</span>Zero DAX measures required</li>
+          <li><span class="ci">🚀</span>Handles special characters natively</li>
+          <li><span class="ci">🚀</span>Easy to debug — just look at the table in Power BI</li>
+          <li><span class="ci">🚀</span>Can handle up to 30,000 rows via dataReductionAlgorithm</li>
+          <li><span class="ci">🚀</span>Fully future-proof — add new columns without changing DAX</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div-line" />
+
+  <!-- CTA -->
+  <section id="get-started">
+    <div class="cta-block">
+      <h2>Ready to explore your lineage?</h2>
+      <p>Download the visual and start mapping your Power BI ecosystem in minutes.</p>
+      <div class="btn-group">
+        <a class="btn btn-primary" href="https://github.com/SNLSHETTY87/PBI-Lineage-Explorer-Native-Table/releases"
+          target="_blank">⬇️ Download .pbiviz</a>
+        <a class="btn btn-secondary" href="https://github.com/SNLSHETTY87/PBI-Lineage-Explorer-Native-Table"
+          target="_blank">📦 View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Built by <strong>Sunil Shetty</strong> · <a href="mailto:snlshetty87@gmail.com"
+        style="color:var(--accent2);text-decoration:none;">snlshetty87@gmail.com</a> · PBI Lineage Explorer Native Table
+      Edition v1.0.0.5</p>
+  </footer>
 
 </body>
+
 </html>
