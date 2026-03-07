@@ -23,6 +23,18 @@ A Power BI custom visual that renders an interactive, topological lineage graph 
 
 ---
 
+## Screenshots
+
+**Main View**
+![Main view of the PBI Lineage Explorer](assets/screenshot-main.png)
+
+**Node Details**
+![Lineage node details and layout](assets/screenshot-detail.png)
+
+**Light Theme**
+![Light Theme Support](assets/screenshot-light.png)
+---
+
 ## Quick Start
 
 ### Option A — Use the pre-built visual (easiest)
